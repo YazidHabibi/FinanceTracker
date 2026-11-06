@@ -1,36 +1,33 @@
-import React, { useState, useEffect } from "react";
-import FinanceSummary from "./Finance.jsx";
+import React, { useState, useEffect } from 'react';
+import FinanceSummary from './FinanceSummary.jsx';
+import './transactonlist.jsx'
+import TransactionList from './transactonlist.jsx';
 
-const LOCAL_KEY = "finance-app-data";
+function App() {
+  const [transactions, setTransactions] = useState(() => {
+    const saved = localStorage.getItem("transactions");
+    return saved ? JSON.parse(saved) : [];
+  });
 
-const App = () => {
-  const [transactions, setTransactions] = useState([]);
-
-  // Ambil data dari localStorage saat pertama kali load
   useEffect(() => {
-    const stored = localStorage.getItem(LOCAL_KEY);
-    if (stored) {
-      setTransactions(JSON.parse(stored));
-    }
-  }, []);
-
-  // Simpan setiap kali transaksi berubah
-  useEffect(() => {
-    localStorage.setItem(LOCAL_KEY, JSON.stringify(transactions));
+    localStorage.setItem("transactions", JSON.stringify(transactions));
   }, [transactions]);
 
-  const handleAddTransaction = (newTx) => {
-    setTransactions([newTx, ...transactions]);
+  const addTransaction = (transaction) => {
+    setTransactions([...transactions, transaction]);
+  };
+
+  const deleteTransaction = (id) => {
+    setTransactions(transactions.filter((t) => t.id !== id));
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
-      <FinanceSummary
-        transactions={transactions}
-        onAddTransaction={handleAddTransaction}
-      />
+    <div className="p-4 max-w-3xl mx-auto mt-10 space-y-6">
+      <h1 className="font-serif text-4xl md:text-5xl font-semibold tracking-tight text-[#1E2B25]">Personal Finance Tracker</h1>
+      <FinanceSummary transactions={transactions} onAddTransaction={addTransaction} />
+      <TransactionList transactions={transactions} onDelete={deleteTransaction} />
     </div>
   );
-};
+}
 
 export default App;

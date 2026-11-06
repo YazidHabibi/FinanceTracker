@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import FinanceSummary from './FinanceSummary.jsx';
-import './transactonlist.jsx'
-import TransactionList from './transactonlist.jsx';
+import './financesummary.jsx'
+import './transactionlist.jsx'
+import TransactionList from './transactionlist.jsx';
+import FinanceSummary from './financesummary.jsx';
 
 function App() {
   const [transactions, setTransactions] = useState(() => {
